@@ -207,7 +207,7 @@ func encodeToImage(wc *webcam.Webcam, back chan struct{}, fi chan []byte,
 				grayImg.Pix[i] = frame[i2] //copy only Y set
 			}
 			//select edges
-			edges := sobel.FilterGray(grayImg, sobel.Sobel)
+			edges := sobel.FilterGrayMath(grayImg)
 			//convert to jpeg
 			buf = &bytes.Buffer{}
 			if err := jpeg.Encode(buf, edges, nil); err != nil {
