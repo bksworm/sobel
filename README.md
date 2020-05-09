@@ -8,7 +8,7 @@ The only tool you'll need to run this implementation is [go](https://golang.org)
 
 If go is installed, run: 
 ```
- $ git clone https://github.com/adamperlin/sobel && cd sobel
+ $ git clone https://github.com/bksworm/sobel && cd sobel
  $ go build 
 ``` 
 # Usage 
@@ -17,11 +17,11 @@ This tool supports both png and jpeg image input formats, and file type is deter
 
 To run detection on a **specific file**, use: 
 
-`$ ./edgedetect -f <file.[png, jpg]>`
+`$ ./examples/edgedetect -f <file.[png, jpg]>`
 
 You can optionally specify an **output file**:
 
-`$ ./edgedetect -f <file.[png, jpg]> -o <output.[png, jpg]>`
+`$ ./examples/edgedetect -f <file.[png, jpg]> -o <output.[png, jpg]>`
 
 Default output is `sobel.jpg` or `sobel.png`
 
@@ -37,7 +37,7 @@ package main
 import (
   "image"
   "os"
-  "github.com/adamperlin/sobel" //package which implements the filter
+  "github.com/bksworm/sobel" //package which implements the filter
  )
  
  var edge image.Image
@@ -50,7 +50,12 @@ import (
     img, _, err := image.Decode(f)
     if err != nil { panic(err) }
     
-    edge = sobel.Filter(img) //converts "img" to grayscale and runs edge detect. Returns an image.Image with changes.
+    edge = sobel.FilterMath(img) //converts "img" to grayscale and runs edge detect. Returns an image.Image with changes.
     //do something with detected image...
  }
 ```
+Function FilterMath() is pure go filter implementation. If you like things to go 8-9 times faster you may use FilterSimd(). This one is based on [Simd library](https://ermig1979.github.io/Simd/help/group__sobel__filter.html#gace953da81ab3f334ec6435d92ac52c05).  But if you don't need it, you may clear the mess I have here :)
+
+There are a few another implementations of the filter. You can use them in benchmark tests to get an idea about go code performance and memory management tricks.
+
+Happy coding for everyone!
